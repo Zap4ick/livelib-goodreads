@@ -19,7 +19,7 @@ let booksSkipped = 0
 test.beforeEach(async ({context}) => {
     if (process.env.LIVELIB_COOKIE == '' || process.env.GOODREADS_COOKIE_1 == '' || process.env.GOODREADS_COOKIE_2 == '') {
         console.warn("Check cookies variables! Stopping the run")
-        process.exit(0)
+        test.skip()
     }
 
     if (process.env.READ_LIVELIB == 'true' && process.env.LIVELIB_COOKIE !== '') {
