@@ -6,9 +6,9 @@ import {FileUtils} from "./utils/file-utils";
 import {GoodreadsSearchPage} from "./pages/goodreads/goodreads-search-page";
 import {GoodreadsBookPage} from "./pages/goodreads/goodreads-book-page";
 
-let booksWithISBNs: Record<string, number>[] = []
-let booksWithNoISBN: Record<string, number>[] = []
-let problemBooks: Record<string, number>[] = []
+let booksWithISBNs: Record<string, number> = {}
+let booksWithNoISBN: Record<string, number> = {}
+let problemBooks: Record<string, number> = {}
 
 let problemLogFile = '../books-problem.log';
 let booksIsbnFile = '../books-isbn.log';
@@ -78,7 +78,7 @@ test('Move books', async ({page}) => {
             problemBooks = await FileUtils.readBooksFromFile(problemLogFile)
         }
 
-        console.log("Starting filling the books")
+        console.log("Starting filling the books");
         await markBooksAndSetRatings(page, booksWithISBNs);
         await markBooksAndSetRatings(page, booksWithNoISBN);
     }
@@ -133,7 +133,7 @@ async function readBooks(page: Page) {
     function processBookWithIsbnAndRating(bookNamesKey: string, bookISBN: string, rating: number) {
         console.log(`Adding book ISBN #${Object.entries(booksWithISBNs).length + 1} ${bookNamesKey}`)
         booksWithISBNs[bookISBN] = rating
-        FileUtils.addBookToFile(booksIsbnFile, `${bookISBN.trim()}: ${rating}\n`)
+        FileUtils.addBookToFile(booksIsbnFile, `${bookISBN.trim()} : ${rating}\n`)
     }
 
     function processBookWithNoIsbnAndNoRating(bookNamesKey: string, rating: number) {
@@ -145,13 +145,12 @@ async function readBooks(page: Page) {
     function processBookWithNoIsbn(bookNamesKey: string, rating: number) {
         console.warn(`Adding book name #${Object.entries(booksWithNoISBN).length + 1} ${bookNamesKey} (ISBN not found)`)
         booksWithNoISBN[bookNamesKey] = rating
-        FileUtils.addBookToFile(booksNamesFile, `${bookNamesKey.trim()}: ${rating}\n`)
+        FileUtils.addBookToFile(booksNamesFile, `${bookNamesKey.trim()} : ${rating}\n`)
     }
 }
 
-async function markBooksAndSetRatings(page: Page, books: Record<string, number>[]) {
-    for (const book of books) {
-        for (const [bookKey, rating] of Object.entries(book)) {
+async function markBooksAndSetRatings(page: Page, books: Record<string, number>) {
+        for (const [bookKey, rating] of Object.entries(books)) {
             await page.goto(process.env.TARGET_URL + bookKey);
             let goodreadsSearchPage = new GoodreadsSearchPage(page)
             if (await goodreadsSearchPage.isPageOpened()) {
@@ -177,7 +176,6 @@ async function markBooksAndSetRatings(page: Page, books: Record<string, number>[
                 }
             }
         }
-    }
 
     async function processBookRating(goodreadsBookPage: GoodreadsBookPage, rating: number, bookKey: string) {
         let isRatingSet = await goodreadsBookPage.isRatingSet();

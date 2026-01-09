@@ -1,4 +1,4 @@
-[![CI](https://github.com/Zap4ick/gatling-sample/actions/workflows/blank.yml/badge.svg)](https://github.com/Zap4ick/gatling-sample/actions/workflows/blank.yml)
+[![Playwright Tests](https://github.com/Zap4ick/livelib-goodreads/actions/workflows/playwright.yml/badge.svg)](https://github.com/Zap4ick/livelib-goodreads/actions/workflows/playwright.yml)
 
 # LiveLib - Goodreads ratings mover
 This is a script to move ratings from books tracking site LiveLib to GoodReads.
@@ -12,6 +12,9 @@ Option **FILL_GOODREADS** turns filling on, from files or on the fly if READ_LIV
 Play with them to run the script step by step if needed.
 The script first tries to find books by isbn then by name. Searching by name is the most unreliable so check problems file to rate missing books manually.
 Files created are: _books-isbn.log_, _books-names.log_, _books-problem.log_.
+
+Headless mode is turned off in [playwright.config.ts](playwright.config.ts).
+Timeout for the script is set in [playwright.config.ts](playwright.config.ts).
 
 # Technologies
 
