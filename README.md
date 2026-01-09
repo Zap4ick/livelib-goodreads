@@ -10,6 +10,7 @@ Open dev tools on goodreads site and get **at-main** and **ubid-main** cookies v
 Option **READ_LIVELIB** turns scraping and saving to files on.<br>
 Option **FILL_GOODREADS** turns filling on, from files or on the fly if READ_LIVELIB is on.<br>
 Play with them to run the script step by step if needed.<br>
+<br>
 The script first tries to find books by isbn then by name. Searching by name is the most unreliable so check problems file to rate missing books manually.<br>
 Files created are: _books-isbn.log_, _books-names.log_, _books-problem.log_.<br>
 
